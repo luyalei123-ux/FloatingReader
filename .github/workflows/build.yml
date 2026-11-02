@@ -1,0 +1,94 @@
+name: Build and package
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  macos:
+    runs-on: macos-15
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - name: Reader script regression
+        run: node macos/Tests/reader.test.cjs
+      - name: Universal app (Intel + Apple Silicon)
+        run: bash scripts/build-macos.sh universal
+      - name: Architecture-specific downloads
+        run: bash scripts/package-macos-variants.sh
+      - name: Version macOS download names
+        shell: bash
+        run: |
+          version=$(tr -d '\r\n' < VERSION)
+          for label in Intel AppleSilicon universal; do
+            mv "dist/FloatingReader-macOS-$label.zip" "dist/FloatingReader-macOS-$label-$version.zip"
+          done
+      - name: Checksums
+        run: python3 scripts/checksums.py --label macOS
+      - uses: actions/upload-artifact@v7
+        with:
+          name: macOS-downloads
+          path: |
+            dist/*.zip
+            dist/SHA256SUMS-macOS.txt
+          if-no-files-found: error
+          compression-level: 0
+  windows:
+    runs-on: windows-2022
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.402'
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - name: Windows chapter navigation checks
+        run: node windows/Tests/navigation.test.cjs
+      - name: Windows Ctrl shortcuts and state tests
+        run: dotnet run --project windows/Tests/FloatingReader.Tests.csproj -c Release
+      - name: Build portable Windows preview
+        shell: pwsh
+        run: ./scripts/build-windows.ps1
+      - name: Checksums
+        run: python scripts/checksums.py --label Windows
+      - uses: actions/upload-artifact@v7
+        with:
+          name: Windows-downloads
+          path: |
+            dist/*.zip
+            dist/SHA256SUMS-Windows.txt
+          if-no-files-found: error
+          compression-level: 0
+  release-draft:
+    if: startsWith(github.ref, 'refs/tags/v') && github.event_name == 'push'
+    needs: [macos, windows]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
+        with:
+          path: release-assets
+          merge-multiple: true
+      - name: Verify and draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$RELEASE_TAG" = "v$(tr -d '\r\n' < VERSION)"
+          cd release-assets
+          cat SHA256SUMS-*.txt > SHA256SUMS.txt
+          sha256sum --check SHA256SUMS.txt
+          cd ..
+          gh release create "$RELEASE_TAG" release-assets/*.zip release-assets/SHA256SUMS.txt --verify-tag --draft --prerelease --title "浮读 $RELEASE_TAG" --notes-file docs/RELEASE_NOTES.md

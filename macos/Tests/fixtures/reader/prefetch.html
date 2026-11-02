@@ -1,0 +1,15 @@
+<meta charset="utf-8">
+<button class="readerHeaderButton">上一章</button><button class="readerControls_item catalog">目录</button>
+<div class="readerChapterTitle"></div><div class="readerChapterContent" style="font:24px sans-serif"></div>
+<div class="readerFooter"><button class="readerFooter_button">下一章</button></div>
+<div class="readerCatalog" style="display:none"></div>
+<script>
+window.currentChapter=1;
+function draw(){document.querySelectorAll(".readerCatalog_list_item").forEach((b,i)=>b.setAttribute("aria-current",String(i+1===currentChapter)));document.querySelector(".readerFooter_button").disabled=currentChapter===3;document.querySelector(".readerHeaderButton").disabled=currentChapter===1;document.querySelector('.readerChapterTitle').textContent='章节'+currentChapter;document.querySelector('.readerChapterContent').textContent=('第'+currentChapter+'章的正文内容，预读时不应覆盖当前章。').repeat(100)}
+draw();
+document.querySelector('.readerFooter_button').onclick=e=>{if(e.isTrusted&&currentChapter<3){currentChapter++;draw()}};
+document.querySelector('.readerHeaderButton').onclick=e=>{if(e.isTrusted&&currentChapter>1){currentChapter--;draw()}};
+const catalog=document.querySelector('.readerCatalog');
+for(let n=1;n<=3;n++){const button=document.createElement('button');button.className='readerCatalog_list_item';button.textContent='第'+n+'章';button.onclick=e=>{if(e.isTrusted){currentChapter=n;draw();catalog.style.display='none'}};catalog.appendChild(button)}
+document.querySelector('.catalog').onclick=e=>{if(e.isTrusted)catalog.style.display=catalog.style.display==='none'?'block':'none'};
+</script>

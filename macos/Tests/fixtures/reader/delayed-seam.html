@@ -1,0 +1,10 @@
+<meta charset="utf-8"><div class="readerChapterContent" style="width:900px;height:5200px"><canvas width="900" height="5200"></canvas></div><script>
+const c=document.querySelector('canvas').getContext('2d');c.fillStyle='white';c.fillRect(0,0,900,5200);c.fillStyle='black';c.font='24px Arial';
+for(let i=0;i<30;i++)c.fillText('INITIAL COMPLETE READER PARAGRAPH '+i,30,60+i*60);
+let pending=false;addEventListener('scroll',()=>{if(scrollY>1500&&!pending){pending=true;setTimeout(()=>{
+ c.fillStyle='black';c.font='24px Arial';
+ for(let i=32;i<80;i++)c.fillText('DELAYED COMPLETE READER PARAGRAPH '+i,30,60+i*60);
+ c.fillText('BOUNDARY RECOVERED SENTENCE',30,1940);
+ c.fillText('FINAL COMPLETE SENTENCE',30,5000);
+},3000);}});
+</script>

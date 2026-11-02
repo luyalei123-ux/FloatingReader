@@ -1,0 +1,12 @@
+<meta charset="utf-8">
+
+<div class="readerChapterTitle">固定标题</div>
+<div class="readerChapterContent"><canvas id="canvas" width="900" height="1000"></canvas></div>
+<div class="readerFooter"><button class="readerFooter_button" style="height:70px;width:200px">下一章</button></div>
+<script>
+const ctx=document.getElementById('canvas').getContext('2d');
+const fillRect=ctx.fillRect.bind(ctx),fillText=ctx.fillText.bind(ctx);
+function draw(text){ctx.fillStyle='white';fillRect(0,0,900,1000);ctx.fillStyle='black';ctx.font='48px sans-serif';fillText('固定页眉',40,60);fillText(text,40,600)}
+draw('第一章原有正文');
+document.querySelector('button').addEventListener('click',e=>{if(e.isTrusted){window.actualTrust=true;draw('第二章新的正文内容')}});
+</script>
