@@ -11,7 +11,7 @@
   <ItemGroup>
     <Compile Remove="Core/**/*.cs;Tests/**/*.cs"/>
     <ProjectReference Include="Core/FloatingReader.Core.csproj"/>
-    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4258.31"/>
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4314.35"/>
     <Content Include="../macos/Resources/reader.js" Link="Resources/reader.js" CopyToOutputDirectory="PreserveNewest"/>
     <Content Include="../macos/Resources/Icons/*.png" Link="Resources/Icons/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest"/>
     <Content Include="Resources/navigation.js" CopyToOutputDirectory="PreserveNewest"/>
