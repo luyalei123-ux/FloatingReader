@@ -13,13 +13,17 @@
 
 ## 下载与安装
 
-在本仓库 **Releases** 中选择与你电脑对应的文件；源代码页面的绿色 Code 按钮下载的是源码，不是可运行应用。尚未创建 Release 时，可由维护者上传已准备的包，或在 Actions 构建完成后创建发布草稿。
+[进入下载页面，查看全部版本](https://github.com/luyalei123-ux/FloatingReader/releases)
 
-| 电脑 | 当前测试包 | 验证状态 |
-| --- | --- | --- |
-| Intel Mac，macOS 12+ | `FloatingReader-macOS-Intel-0.26.18.zip` | 已在 Intel 环境做原生回归；真实书籍仍需持续验证 |
-| Apple 芯片 Mac，macOS 12+ | `FloatingReader-macOS-AppleSilicon-0.26.18.zip` | 已交叉编译，当前包尚待 Apple 芯片实机验证 |
-| Windows 10 22H2／11 x64 | `FloatingReader-Windows-x64-0.29.2-preview.zip` | 已交叉编译、逻辑检查，尚待 Windows 实机验证 |
+请选择与你的电脑对应的安装包：
+
+| 电脑 | 下载链接 |
+| --- | --- |
+| Intel Mac，macOS 12+ | [下载 Intel 版](https://github.com/luyalei123-ux/FloatingReader/releases/download/v0.26.18/FloatingReader-macOS-Intel-0.26.18.zip) |
+| Apple 芯片 Mac，macOS 12+ | [下载 Apple 芯片版](https://github.com/luyalei123-ux/FloatingReader/releases/download/v0.26.18/FloatingReader-macOS-AppleSilicon-0.26.18.zip) |
+| Windows 10 22H2／11 x64 | [下载 Windows 测试版](https://github.com/luyalei123-ux/FloatingReader/releases/download/v0.26.18/FloatingReader-Windows-x64-0.29.2-preview.zip) |
+
+当前为公开测试版(如有问题可联系我更新版本)。
 
 macOS：退出旧版，解压，将「浮读.app」放入应用程序文件夹后打开。本次包使用临时签名，未做 Apple 公证，可能出现开发者验证提示。不要关闭系统安全保护。
 
