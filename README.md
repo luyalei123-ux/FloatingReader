@@ -1,4 +1,5 @@
 # 浮读 · FloatingReader
+一键隐藏工具栏和正文背景，只留下阅读文字。
 
 <img src="assets/logo-512.png" width="88" alt="浮读图标">
 
